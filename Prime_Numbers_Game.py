@@ -66,38 +66,122 @@ Explanation:
 ------------------------------------------------------------------------------------------------------------------
 Time Limit(X): 0.50 sec(s) for each input.
 Memory Limit: 512 MB
-Source Limit: 100 KB'''
+Source Limit: 100 KB
+------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------'''
 
 ''' PROGRAM CODE '''
+'''
+# Function to find Prime Numbers                        # ^
+def primenumbers(lowerbound, upperbound):               # |
+    prime_num = []                                      # |
+                                                        # |
+    for num in range(lowerbound, upperbound + 1):       # |     
+        if num == 2 or num == 3 or num == 5:            # |
+            prime_num.append(num)                       # |
+            pass                                        # |
+        elif num > 2 and num % 2 == 0:                  # |  <--- An alternate method to find primes
+            pass                                        # |  <--- But with higher time complexity   
+        else:                                           # |
+            maxDiv = int(num**0.5) + 1                  # |
+            for k in range(3, maxDiv):                  # |
+                if (num % k) == 0:                      # |
+                    break                               # |    
+            else:                                       # |
+                prime_num.append(num)                   # |            
+    return prime_num                                    # V
+'''  
+ 
+''' while the above code serves the purpose but it has a higher time complexity
+    Hence it needs to be optimized.
+    A better alternative is given below - also called SEIVE METHOD of finding primes
+'''           
 
+'''    
+    In Seive Method we will run the loop till sqrt(upperbound)
+    Because any multiple after that is the reverse of what was there before that
+    EXAMPLE:
+        Multiples of 36:
+        1 x 36      A
+        2 x 18      |   We will only consider this to check
+        3 x 12      |
+        4 x 9       V
+      -------------  
+        6 x 6       <------ sqrt(36) = 6
+      -------------  
+        9 x 4
+        12 x 3
+        18 x 2
+        36 x 1
+'''
+
+# SEIVE METHOD to find Prime Numbers
+
+def seiveprimenumbers(lowerbound, upperbound):
+    # Define an empty list to store the prime numbers
+    prime_num = []
+    
+    # SET all the values in the range [2, upperbound + 1] as TRUE
+    prime = [True for i in range(upperbound + 1)]
+    
+    # Innitialize a variable p
+    p = 2
+    
+    # Check the loop till p^2 <= upperbound.
+    # Why? -> Description given above the function defination
+    while (p*p <= upperbound):
+        if (prime[p] == True):
+        
+            # Check other multiples of the number p and if found set it as False
+            for j in range(p*p, upperbound + 1, p):
+                prime[j] = False
+        
+        # increment p to run the while loop
+        p += 1
+    
+    # Now loop through the list and check which elements are True
+    for p in range(lowerbound, upperbound + 1):
+        # If found true then append it to the prime_num list
+        if prime[p]:
+            prime_num.append(p)
+    
+    return prime_num
+                
+ 
+# Function to play the game
 def primegame(N, RangeInputs):
     for i in range(N):
+        # Take each element of RangeInputs as list
         num_range = list(RangeInputs[i])
+        
+        # Define the lower bound and upper bound from the input list
         lower = int(num_range[0])
-        upper = int(num_range[-1])    
-        prime_num_list = []
-        for num in range(lower, upper + 1):            
-            if num == 2 or num == 3 or num == 5:
-                prime_num_list.append(num)
-                pass
-            elif num > 2 and num % 2 == 0:
-                pass
-            else:
-                maxDiv = int(num**0.5) + 1                
-                for k in range(3, maxDiv):  
-                    if (num % k) == 0: 
-                        break            
-                else:
-                    prime_num_list.append(num)
+        upper = int(num_range[-1]) 
+
+        # Call the primenumbers function to find a list of prime numbers
+        prime_num_list = seiveprimenumbers(lower, upper)
+        
         if len(prime_num_list) == 0:
+            # Condition for no prime numbers
             print("-1")
+        
         else: 
+            # difference between max and min values of prime numbers found in list
             print(prime_num_list[-1] - prime_num_list[0])
-              
+
+''' ------------------- MAIN FUNCTION TO TAKE INPUTS -----------------------------------'''              
+# Define number of range inputs to be taken by the compiler
 T = int(input())
+
+# Innitialize list to take the range inputs and keep it in a list 
+# primeRange = [ [l1 r1], [l2 r2], [l3 r3], .... ]
 primeRange = []
 for i in range(T):
+    # take input as list item and split them at space b/w them
     num_input = list(input().split())
     primeRange.append(num_input)
+    
+# Call the primegame function    
 primegame(T, primeRange)
 
