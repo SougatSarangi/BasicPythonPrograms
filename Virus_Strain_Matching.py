@@ -62,7 +62,8 @@ Source Limit: 100 KB
 # Function for finding the test result
 
 def testresult(Virus, N, NameList):
-
+    print("\n  Test Results")
+    print("-----------------------")
     # Convert the Virus string into a list with letters of the string as elements
     # EXAMPLE:  Virus = CORONA     then     V = ['C' 'O' 'R' 'O' 'N' 'A']
     V = list(Virus)
@@ -102,23 +103,23 @@ def testresult(Virus, N, NameList):
         # Compare the count with length of the element in NameList
         # If the count matches then it's POSITIVE else it's NEGATIVE
         if count == len(NameList[i]):
-            print("POSITIVE")
+            print(f"Sample {i+1} : POSITIVE")
         else:
-            print("NEGATIVE")
+            print(f"Sample {i+1} : NEGATIVE")
 
 
 ''' ------------------- MAIN FUNCTION TO TAKE INPUTS -----------------------------------''' 
 # Take input of the Virus Strain to be checked
-V = input()
+V = input("Enter Virus Strain To be checked: ")
 
 # Define number of patient strains to be taken by the compiler
-N = int(input())
+N = int(input("Enter no. of patients/ blood samples: "))
 
 # Take input of the patient strains in a list
 ele = 0
 B = []
 for ele in range (N):
-    patient = list(input())
+    patient = list(input(f"Sample {ele + 1}: "))
     B.append(patient)
 
 # Call the testresult function to get the results
